@@ -9,6 +9,8 @@
     [:head
       [:title "Expensive"]
       [:meta {:content "text/html; charset=UTF-8" :http-equiv "content-type"}]
+      [:meta {:name "viewport" :content "width=device-width"}]
+      [:meta {:name "apple-mobile-web-app-capable" :content "yes"}]
       (include-css "/style.css")]
     [:body
       body]))
