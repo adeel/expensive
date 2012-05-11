@@ -33,7 +33,7 @@
     (if-let [user (db/fetch-one :users :where {:_id (object-id (session-get :user))})]
       (do (db/update! :users user {"$push" {:transactions
             {:title     title
-             :amount    (try (Float/parseFloat amount) (catch Exception e 0))
+             :amount    (try (Float/parseFloat amount) (catch Exception e 0.0))
              :source    source
              :direction direction
              :date      (date-for-db (datetime/now))}}})
