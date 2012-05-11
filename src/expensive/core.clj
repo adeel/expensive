@@ -6,6 +6,7 @@
   (:use [sandbar.stateful-session :only (wrap-stateful-session
                                          session-put!
                                          session-get)])
+  (:use [hozumi.mongodb-session :only (mongodb-store)])
   (:require [somnium.congomongo :as db])
   (:require [clj-time.core :as datetime])
   (:require [expensive.views :as views])
@@ -47,7 +48,7 @@
 (def app
   (-> main-routes
     wrap-with-logger
-    wrap-stateful-session
+    (wrap-stateful-session {:store (mongodb-store)})
     handler/api))
 
 (defn -main []

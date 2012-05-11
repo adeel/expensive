@@ -7,7 +7,8 @@
                  [hiccup "1.0.0"]
                  [congomongo "0.1.7-SNAPSHOT"]
                  [clj-time "0.3.0"]
-                 [sandbar/sandbar "0.4.0-SNAPSHOT"]]
+                 [sandbar/sandbar "0.4.0-SNAPSHOT"]
+                 [org.clojars.adamwynne/mongodb-session "1.0.2"]]
   :dev-dependencies [[lein-ring "0.7.0"]
                      [org.slf4j/slf4j-simple "1.6.1"]]
   :ring {:handler expensive.core/app}
