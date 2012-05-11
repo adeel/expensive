@@ -1,0 +1,62 @@
+html,
+body {
+  font-family: "Helvetica Neue";
+  font-size: 1.1em;
+  margin: 20px auto;
+  width: 300px; }
+
+.current-balance-indicator {
+  margin: 0 0 30px; }
+  .current-balance-indicator .container {
+    display: table;
+    width: 100%; }
+    .current-balance-indicator .container .title {
+      display: table-cell;
+      width: 100px;
+      font-weight: bold; }
+    .current-balance-indicator .container .balance {
+      display: table-cell;
+      color: green;
+      text-align: right; }
+
+.add-transaction-form form {
+  margin: 0;
+  width: 100%; }
+  .add-transaction-form form input[type=text],
+  .add-transaction-form form select {
+    width: 284px;
+    font-family: inherit;
+    font-size: inherit;
+    padding: 2px 6px; }
+  .add-transaction-form form #source-field,
+  .add-transaction-form form #direction-field {
+    display: inline;
+    padding-right: 10px; }
+    .add-transaction-form form #source-field select,
+    .add-transaction-form form #direction-field select {
+      width: 140px; }
+  .add-transaction-form form #direction-field {
+    padding-right: 0;
+    padding-left: 10px; }
+  .add-transaction-form form input.button {
+    margin: 7px 0 0;
+    width: 300px; }
+
+.thirty-day-report .day h3 {
+  font-size: 1em; }
+.thirty-day-report .day .transaction {
+  display: table;
+  width: 100%; }
+  .thirty-day-report .day .transaction .title {
+    display: table-cell; }
+  .thirty-day-report .day .transaction .amount {
+    display: table-cell;
+    color: green;
+    text-align: right; }
+  .thirty-day-report .day .transaction .source {
+    display: table-cell;
+    width: 50px;
+    color: #aaaaaa;
+    text-align: right; }
+  .thirty-day-report .day .transaction[direction=out] .amount {
+    color: red; }

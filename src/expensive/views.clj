@@ -1,7 +1,17 @@
 (ns expensive.views
   (:use hiccup.core)
+  (:use hiccup.page)
   (:require [clj-time.core :as datetime])
   (:use expensive.util))
+
+(defn layout [& body]
+  (html5
+    [:head
+      [:title "Expensive"]
+      [:meta {:content "text/html; charset=UTF-8" :http-equiv "content-type"}]
+      (include-css "/style.css")]
+    [:body
+      body]))
 
 (defn login-form []
   [:div.login-form
@@ -14,7 +24,7 @@
         [:input.button {:type "submit" :value "Login"}]]]])
 
 (defn login []
-  (html
+  (layout
     (login-form)))
 
 (defn current-balance-indicator [transactions]
@@ -33,15 +43,18 @@
 (defn thirty-day-report [transactions]
   [:div.thirty-day-report
     (for [i (range 31)]
-      (let [date (datetime/minus (datetime/now) (datetime/days i))]
-        [:div.day
-          [:h3 (date-for-humans date)]
-          (map
-            (fn [t]
-              [:div.transaction
-                [:div.title (t :title)
-                [:div.amount (format "%.2f" (t :amount))]]])
-            (transactions (date-for-db date)))]))])
+      (let [date (datetime/minus (datetime/now) (datetime/days i))
+            ts   (transactions (date-for-db date))]
+        (when (> (count ts) 0)
+          [:div.day
+            [:h3 (date-for-humans date)]
+            (map
+              (fn [t]
+                [:div.transaction {:direction (t :direction)}
+                  [:div.title (t :title)]
+                  [:div.amount (format "%.2f" (t :amount))]
+                  [:div.source (t :source)]])
+              ts)])))])
 
 (defn add-transaction-form []
   [:div.add-transaction-form
@@ -49,20 +62,20 @@
       [:div.field
         [:input#title-field {:type "text" :name "title" :value "Title"}]]
       [:div.field
-        [:input#amount-field {:type "text" :name "amount" :value "Amount"}]]
-      [:div.field
-        [:select#source-field {:name "source"}
+        [:input {:type "text" :name "amount" :value "Amount"}]]
+      [:div#source-field.field
+        [:select {:name "source"}
           [:option {:value "cash"} "Cash"]
           [:option {:value "bank"} "Bank"]]]
-      [:div.field
-        [:select#direction-field {:name "direction"}
+      [:div#direction-field.field
+        [:select {:name "direction"}
           [:option {:value "in"} "In"]
           [:option {:value "out"} "Out"]]]
       [:div.button
         [:input.button {:type "submit" :value "Add"}]]]])
 
 (defn index [user]
-  (html
+  (layout
     (current-balance-indicator (user :transactions))
-    (thirty-day-report (group-by :date (user :transactions)))
-    (add-transaction-form)))
+    (add-transaction-form)
+    (thirty-day-report (group-by :date (user :transactions)))))

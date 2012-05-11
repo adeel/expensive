@@ -3,12 +3,14 @@
   (:use [ring.util.response :only (redirect)])
   (:use compojure.core)
   (:require [compojure.handler :as handler])
+  (:use [compojure.route :only (resources)])
   (:use [sandbar.stateful-session :only (wrap-stateful-session
                                          session-put!
                                          session-get)])
   (:use [hozumi.mongodb-session :only (mongodb-store)])
   (:require [somnium.congomongo :as db])
   (:require [clj-time.core :as datetime])
+  (:use [hiccup.middleware :only (wrap-base-url)])
   (:require [expensive.views :as views])
   (:use [expensive.util :only (mongo object-id sha1 date-for-db)]))
 
@@ -16,7 +18,6 @@
 
 (defroutes main-routes
   (GET "/" []
-    (println (session-get :user))
     (if-let [user (db/fetch-one :users :where {:_id (object-id (session-get :user))})]
       (views/index user)
       (views/login)))
@@ -37,7 +38,8 @@
              :direction direction
              :date      (date-for-db (datetime/now))}}})
           (redirect "/"))
-      (views/login))))
+      (views/login)))
+  (resources "/"))
 
 (defn wrap-with-logger [handler]
   (fn [req]
@@ -48,6 +50,7 @@
 (def app
   (-> main-routes
     wrap-with-logger
+    wrap-base-url
     (wrap-stateful-session {:store (mongodb-store)})
     handler/api))
 
