@@ -25,10 +25,10 @@
     [:div.current-balance-indicator
       [:div.container
         [:div.title "Bank"]
-        [:div.balance (str bank-bal)]]
+        [:div.balance (format "%.2f" bank-bal)]]
       [:div.container
         [:div.title "Cash"]
-        [:div.balance (str cash-bal)]]]))
+        [:div.balance (format "%.2f" cash-bal)]]]))
 
 (defn thirty-day-report [transactions]
   [:div.thirty-day-report
@@ -40,7 +40,7 @@
             (fn [t]
               [:div.transaction
                 [:div.title (t :title)
-                [:div.amount (t :amount)]]])
+                [:div.amount (format "%.2f" (t :amount))]]])
             (transactions (date-for-db date)))]))])
 
 (defn add-transaction-form []
