@@ -53,7 +53,7 @@
             (map
               (fn [t]
                 [:div.transaction {:direction (t :direction)}
-                  [:div.title (t :title)]
+                  [:div.category (t :category)]
                   [:div.amount (format "%.2f" (t :amount))]
                   [:div.source (t :source)]])
               ts)])))])
@@ -62,7 +62,7 @@
   [:div.add-transaction-form
     [:form {:action "" :method "POST"}
       [:div.field
-        [:input#title-field {:type "text" :name "title" :value "Title"}]]
+        [:input#category-field {:type "text" :name "category" :value "Category"}]]
       [:div.field
         [:input {:type "text" :name "amount" :value "Amount"}]]
       [:div#source-field.field

@@ -29,10 +29,10 @@
           (do (session-put! :user (str (user :_id)))
               (redirect "/"))
           (redirect "/")))))
-  (POST "/" {{:keys [title amount direction source]} :params}
+  (POST "/" {{:keys [category amount direction source]} :params}
     (if-let [user (db/fetch-one :users :where {:_id (object-id (session-get :user))})]
       (do (db/update! :users user {"$push" {:transactions
-            {:title     title
+            {:category  category
              :amount    (try (Float/parseFloat amount) (catch Exception e 0.0))
              :source    source
              :direction direction
