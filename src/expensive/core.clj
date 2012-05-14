@@ -12,7 +12,7 @@
   (:require [clj-time.core :as datetime])
   (:use [hiccup.middleware :only (wrap-base-url)])
   (:require [expensive.views :as views])
-  (:use [expensive.util :only (mongo object-id sha1 date-for-db)]))
+  (:use [expensive.util :only (mongo object-id sha1 date-for-db date-from-db-format)]))
 
 (mongo)
 
@@ -29,15 +29,17 @@
           (do (session-put! :user (str (user :_id)))
               (redirect "/"))
           (redirect "/")))))
-  (POST "/" {{:keys [category amount direction source]} :params}
+  (POST "/" {{:keys [category amount direction source date]} :params}
     (if-let [user (db/fetch-one :users :where {:_id (object-id (session-get :user))})]
-      (do (db/update! :users user {"$push" {:transactions
-            {:category  category
-             :amount    (try (Float/parseFloat amount) (catch Exception e 0.0))
-             :source    source
-             :direction direction
-             :date      (date-for-db (datetime/now))}}})
-          (redirect "/"))
+      (let [date (try (date-from-db-format date)
+                   (catch Exception e (date-for-db (datetime/now))))]
+        (db/update! :users user {"$push" {:transactions
+          {:category  category
+           :amount    (try (Float/parseFloat amount) (catch Exception e 0.0))
+           :source    source
+           :direction direction
+           :date      (date-for-db date)}}})
+        (redirect "/"))
       (views/login)))
   (resources "/"))
 

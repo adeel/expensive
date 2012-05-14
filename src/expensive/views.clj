@@ -42,9 +42,9 @@
         [:div.title "Cash"]
         [:div.balance (format "%.2f" cash-bal)]]]))
 
-(defn thirty-day-report [transactions]
-  [:div.thirty-day-report
-    (for [i (range 31)]
+(defn transaction-list [transactions delta]
+  [:div.transaction-list
+    (for [i (range (- delta) (inc delta))]
       (let [date (datetime/minus (datetime/now) (datetime/days i))
             ts   (transactions (date-for-db date))]
         (when (> (count ts) 0)
@@ -57,6 +57,12 @@
                   [:div.amount (format "%.2f" (t :amount))]
                   [:div.source (t :source)]])
               ts)])))])
+
+(defn n-day-date-selector [start-date n]
+  [:select {:name "date"}
+    (for [i (range (inc n))
+          :let [date (datetime/plus start-date (datetime/days i))]]
+      [:option {:value (date-for-db date)} (date-for-humans date)])])
 
 (defn add-transaction-form []
   [:div.add-transaction-form
@@ -73,6 +79,8 @@
         [:select {:name "direction"}
           [:option {:value "in"} "In"]
           [:option {:value "out"} "Out"]]]
+      [:div#date-field.field
+        (n-day-date-selector (datetime/now) 30)]
       [:div.button
         [:input.button {:type "submit" :value "Add"}]]]])
 
@@ -80,4 +88,5 @@
   (layout
     (current-balance-indicator (user :transactions))
     (add-transaction-form)
-    (thirty-day-report (group-by :date (user :transactions)))))
+    (transaction-list
+      (group-by :date (user :transactions)) 30)))

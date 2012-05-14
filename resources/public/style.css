@@ -28,6 +28,8 @@ body {
     font-family: inherit;
     font-size: inherit;
     padding: 2px 6px; }
+  .add-transaction-form form select {
+    width: 300px; }
   .add-transaction-form form #source-field,
   .add-transaction-form form #direction-field {
     display: inline;
@@ -42,21 +44,21 @@ body {
     margin: 7px 0 0;
     width: 300px; }
 
-.thirty-day-report .day h3 {
+.transaction-list .day h3 {
   font-size: 1em; }
-.thirty-day-report .day .transaction {
+.transaction-list .day .transaction {
   display: table;
   width: 100%; }
-  .thirty-day-report .day .transaction .title {
+  .transaction-list .day .transaction .title {
     display: table-cell; }
-  .thirty-day-report .day .transaction .amount {
+  .transaction-list .day .transaction .amount {
     display: table-cell;
     color: green;
     text-align: right; }
-  .thirty-day-report .day .transaction .source {
+  .transaction-list .day .transaction .source {
     display: table-cell;
     width: 50px;
     color: #aaaaaa;
     text-align: right; }
-  .thirty-day-report .day .transaction[direction=out] .amount {
+  .transaction-list .day .transaction[direction=out] .amount {
     color: red; }

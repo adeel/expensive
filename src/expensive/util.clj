@@ -16,6 +16,9 @@
 (defn date-for-db [date]
   (datetime-format/unparse (datetime-format/formatters :year-month-day) date))
 
+(defn date-from-db-format [string]
+  (datetime-format/parse (datetime-format/formatters :year-month-day) string))
+
 ;;
 
 (defn sha1 [obj]
