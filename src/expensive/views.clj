@@ -68,9 +68,9 @@
   [:div.add-transaction-form
     [:form {:action "" :method "POST"}
       [:div.field
-        [:input#category-field {:type "text" :name "category" :value "Category"}]]
+        [:input#category-field {:type "text" :name "category" :placeholder "Category"}]]
       [:div.field
-        [:input {:type "text" :name "amount" :value "Amount"}]]
+        [:input {:type "text" :name "amount" :placeholder "Amount"}]]
       [:div#source-field.field
         [:select {:name "source"}
           [:option {:value "cash"} "Cash"]
