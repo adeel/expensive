@@ -21,8 +21,8 @@
     (if-let [user (db/fetch-one :users :where {:_id (object-id (session-get :user))})]
       (let [ts (map #(db/fetch-one :transactions :where {:_id %})
                  (user :transactions))]
-        (views/index ts)
-        (views/login))))
+        (views/index ts))
+      (views/login)))
   (POST "/login" {user :params}
     (if-let [username (user :username)]
       (if-let [password (user :password)]
