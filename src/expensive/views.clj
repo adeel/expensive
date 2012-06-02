@@ -39,13 +39,13 @@
     [:div.current-balance-indicator
       [:div.container
         [:div.title "Bank"]
-        [:div.balance (format "%.2f" bank-bal)]]
+        [:div.balance (format "%.2f" (float bank-bal))]]
       [:div.container
         [:div.title "Cash"]
-        [:div.balance (format "%.2f" cash-bal)]]
+        [:div.balance (format "%.2f" (float cash-bal))]]
       [:div.container
         [:div.title "Savings"]
-        [:div.balance (format "%.2f" save-bal)]]]))
+        [:div.balance (format "%.2f" (float save-bal))]]]))
 
 (defn transaction-list [transactions delta]
   [:div.transaction-list
