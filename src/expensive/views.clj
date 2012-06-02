@@ -33,14 +33,19 @@
   (let [cash-ts   (filter #(= "cash" (% :source)) transactions)
         cash-bal  (apply + (map #(* (% :amount) (if (= "in" (% :direction)) 1 -1)) cash-ts))
         bank-ts   (filter #(= "bank" (% :source)) transactions)
-        bank-bal  (apply + (map #(* (% :amount) (if (= "in" (% :direction)) 1 -1)) bank-ts))]
+        bank-bal  (apply + (map #(* (% :amount) (if (= "in" (% :direction)) 1 -1)) bank-ts))
+        save-ts   (filter #(= "savings" (% :source)) transactions)
+        save-bal  (apply + (map #(* (% :amount) (if (= "in" (% :direction)) 1 -1)) save-ts))]
     [:div.current-balance-indicator
       [:div.container
         [:div.title "Bank"]
         [:div.balance (format "%.2f" bank-bal)]]
       [:div.container
         [:div.title "Cash"]
-        [:div.balance (format "%.2f" cash-bal)]]]))
+        [:div.balance (format "%.2f" cash-bal)]]
+      [:div.container
+        [:div.title "Savings"]
+        [:div.balance (format "%.2f" save-bal)]]]))
 
 (defn transaction-list [transactions delta]
   [:div.transaction-list
@@ -74,7 +79,8 @@
       [:div#source-field.field
         [:select {:name "source"}
           [:option {:value "cash"} "Cash"]
-          [:option {:value "bank"} "Bank"]]]
+          [:option {:value "bank"} "Bank"]
+          [:option {:value "savings"} "Savings"]]]
       [:div#direction-field.field
         [:select {:name "direction"}
           [:option {:value "in"} "In"]
