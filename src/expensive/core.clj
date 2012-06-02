@@ -35,7 +35,7 @@
     (if-let [user (db/fetch-one :users :where {:_id (object-id (session-get :user))})]
       (let [date (try (date-from-db-format date)
                    (catch Exception e (date-for-db (datetime/now))))
-            t    (db/insert! :transactions user
+            t    (db/insert! :transactions
                    {:user      (user :_id)
                     :category  category
                     :amount    (try (Float/parseFloat amount) (catch Exception e 0.0))
