@@ -54,7 +54,7 @@
               (fn [t]
                 [:div.transaction {:direction (t :direction)}
                   [:div.category (t :category)]
-                  [:div.amount (format "%.2f" (t :amount))]
+                  [:div.amount (format "%.2f" (float (t :amount)))]
                   [:div.source (t :source)]])
               ts)])))])
 
