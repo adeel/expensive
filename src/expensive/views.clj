@@ -57,7 +57,7 @@
             [:h3 (date-for-humans date)]
             (map
               (fn [t]
-                [:div.transaction {:direction (t :direction)}
+                [:div.transaction {:id (str (t :_id)) :direction (t :direction)}
                   [:div.category (t :category)]
                   [:div.amount (format "%.2f" (float (t :amount)))]
                   [:div.source (t :source)]])
