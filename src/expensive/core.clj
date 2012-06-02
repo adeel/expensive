@@ -18,8 +18,10 @@
 
 (defroutes main-routes
   (GET "/" []
-    (if-let [user (db/fetch-one :users :where {:_id (object-id (session-get :user))})]
-      (views/index user)
+    (if-let [user (db/fetch-one :users :where {:_id (object-id (session-get :user))})
+             ts   (map #(db/fetch-one :transactions :where {:_id %})
+                    (user :transactions))]
+      (views/index ts)
       (views/login)))
   (POST "/login" {user :params}
     (if-let [username (user :username)]
@@ -32,13 +34,15 @@
   (POST "/" {{:keys [category amount direction source date]} :params}
     (if-let [user (db/fetch-one :users :where {:_id (object-id (session-get :user))})]
       (let [date (try (date-from-db-format date)
-                   (catch Exception e (date-for-db (datetime/now))))]
-        (db/update! :users user {"$push" {:transactions
-          {:category  category
-           :amount    (try (Float/parseFloat amount) (catch Exception e 0.0))
-           :source    source
-           :direction direction
-           :date      (date-for-db date)}}})
+                   (catch Exception e (date-for-db (datetime/now))))
+            t    (db/insert! :transactions user {"$push" {:transactions
+                   {:user      (user :_id)
+                    :category  category
+                    :amount    (try (Float/parseFloat amount) (catch Exception e 0.0))
+                    :source    source
+                    :direction direction
+                    :date      (date-for-db date)}}})]
+        (db/update! :users user {"$push" {:transactions (t :_id)}})
         (redirect "/"))
       (views/login)))
   (resources "/"))

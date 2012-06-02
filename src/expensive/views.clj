@@ -92,9 +92,9 @@
       [:div.button
         [:input.button {:type "submit" :value "Add"}]]]])
 
-(defn index [user]
+(defn index [transactions]
   (layout
-    (current-balance-indicator (user :transactions))
+    (current-balance-indicator transactions)
     (add-transaction-form)
     (transaction-list
-      (group-by :date (user :transactions)) 30)))
+      (group-by :date transactions) 30)))
