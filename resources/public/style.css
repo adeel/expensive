@@ -57,7 +57,7 @@ body {
     text-align: right; }
   .transaction-list .day .transaction .source {
     display: table-cell;
-    width: 50px;
+    width: 80px;
     color: #aaaaaa;
     text-align: right; }
   .transaction-list .day .transaction[direction=out] .amount {
