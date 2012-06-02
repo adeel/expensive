@@ -78,11 +78,13 @@
         [:input {:type "text" :name "amount" :placeholder "Amount"}]]
       [:div#source-field.field
         [:select {:name "source"}
+          [:option "Source"]
           [:option {:value "cash"} "Cash"]
           [:option {:value "bank"} "Bank"]
           [:option {:value "savings"} "Savings"]]]
       [:div#direction-field.field
         [:select {:name "direction"}
+          [:option "Direction"]
           [:option {:value "in"} "In"]
           [:option {:value "out"} "Out"]]]
       [:div#date-field.field
