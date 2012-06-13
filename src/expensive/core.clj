@@ -21,6 +21,7 @@
     (if-let [user (db/fetch-one :users :where {:_id (object-id (session-get :user))})]
       (let [ts (map #(db/fetch-one :transactions :where {:_id %})
                  (user :transactions))]
+        (session-put! :user (session-get :user)) ; force session timeout to extend
         (views/index ts))
       (views/login)))
   (POST "/login" {user :params}
@@ -57,7 +58,8 @@
   (-> main-routes
     wrap-with-logger
     wrap-base-url
-    (wrap-stateful-session {:store (mongodb-store)})
+    (wrap-stateful-session {:store            (mongodb-store)
+                            :auto-key-change? true})
     handler/api))
 
 (defn -main []
