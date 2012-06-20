@@ -11,6 +11,7 @@
   (:require [somnium.congomongo :as db])
   (:require [clj-time.core :as datetime])
   (:use [hiccup.middleware :only (wrap-base-url)])
+  (:require [clojure-csv.core :as csv])
   (:require [expensive.views :as views])
   (:use [expensive.util :only (mongo object-id sha1 date-for-db date-from-db-format)]))
 
@@ -46,6 +47,18 @@
         (db/update! :users user {"$push" {:transactions (t :_id)}})
         (redirect "/"))
       (views/login)))
+  (GET "/export.csv" []
+    (if-let [user (db/fetch-one :users :where {:_id (object-id (session-get :user))})]
+      {:headers {"content-type" "text/csv"}
+       :body    (csv/write-csv
+                  (map
+                    (fn [t]
+                      [(t :date)
+                       (format "%.2f" (float (* (t :amount) (if (= (t :direction) "in") 1 -1))))
+                       (t :category)
+                       (t :source)])
+                    (db/fetch :transactions :where {:user (user :_id)})))}
+      (redirect "/")))
   (resources "/"))
 
 (defn wrap-with-logger [handler]
