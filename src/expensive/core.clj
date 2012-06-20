@@ -47,7 +47,7 @@
         (db/update! :users user {"$push" {:transactions (t :_id)}})
         (redirect "/"))
       (views/login)))
-  (GET "/export.csv" []
+  (GET "/transactions.csv" []
     (if-let [user (db/fetch-one :users :where {:_id (object-id (session-get :user))})]
       {:headers {"content-type" "text/csv"}
        :body    (csv/write-csv
@@ -58,6 +58,32 @@
                        (t :category)
                        (t :source)])
                     (db/fetch :transactions :where {:user (user :_id)})))}
+      (redirect "/")))
+  (GET "/summary.csv" {{:keys [start end]} :params}
+    (if-let [user (db/fetch-one :users :where {:_id (object-id (session-get :user))})]
+      (let [start (or (try (date-from-db-format start) (catch Exception e nil))
+                      (date-from-db-format "1900-01-01"))
+            end   (or (try (date-from-db-format end) (catch Exception e nil))
+                      (datetime/now))
+            ts    (db/fetch :transactions :where
+                    {:user (user :_id)
+                     :date {"$gte" (date-for-db start)
+                            "$lte" (date-for-db end)}})]
+        {:headers {"content-type" "text/csv"}
+         :body    (csv/write-csv
+                    (let [grouped (group-by :category ts)]
+                      (reduce
+                        (fn [m cat]
+                          (assoc m cat
+                            (str
+                              (apply +
+                                (map
+                                  (fn [t]
+                                    (* (t :amount)
+                                       (if (= (t :direction) "in") 1 -1)))
+                                  (grouped cat))))))
+                        {}
+                        (keys grouped))))})
       (redirect "/")))
   (resources "/"))
 
