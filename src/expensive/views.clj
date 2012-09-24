@@ -66,10 +66,14 @@
                 ts)]])))])
 
 (defn n-day-date-selector [start-date n]
-  [:select {:name "date"}
-    (for [i (range (inc n))
-          :let [date (datetime/plus start-date (datetime/days i))]]
-      [:option {:value (date-for-db date)} (date-for-humans date)])])
+  (let [date-str-today (date-for-db (datetime/now))]
+    [:select {:name "date"}
+      (for [i (range (inc n))
+            :let [date      (datetime/plus start-date (datetime/days i))
+                  date-str  (date-for-db date)
+                  selected? (= date-str-today date-str)]]
+        [:option {:value date-str :selected selected?}
+          (date-for-humans date)])]))
 
 (defn add-transaction-form []
   [:div#add-transaction-form.add-transaction-form.hidden
@@ -90,7 +94,8 @@
           [:option {:value "in"} "In"]
           [:option {:value "out"} "Out"]]]
       [:div#date-field.field
-        (n-day-date-selector (datetime/now) 30)]
+        (n-day-date-selector
+          (datetime/minus (datetime/now) (datetime/days 30)) 60)]
       [:div.button
         [:input.button {:type "submit" :value "Add"}]]]])
 
