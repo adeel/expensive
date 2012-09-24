@@ -2,63 +2,111 @@ html,
 body {
   font-family: "Helvetica Neue";
   font-size: 1.1em;
-  margin: 20px auto;
-  width: 300px; }
+  width: 300px;
+  margin: 0; }
 
 .current-balance-indicator {
-  margin: 0 0 30px; }
-  .current-balance-indicator .container {
-    display: table;
-    width: 100%; }
-    .current-balance-indicator .container .title {
-      display: table-cell;
-      width: 100px;
-      font-weight: bold; }
-    .current-balance-indicator .container .balance {
-      display: table-cell;
-      color: green;
-      text-align: right; }
-
-.add-transaction-form form {
-  margin: 0;
-  width: 100%; }
-  .add-transaction-form form input[type=text],
-  .add-transaction-form form select {
-    width: 284px;
-    font-family: inherit;
-    font-size: inherit;
-    padding: 2px 6px; }
-  .add-transaction-form form select {
-    width: 300px; }
-  .add-transaction-form form #source-field,
-  .add-transaction-form form #direction-field {
-    display: inline;
-    padding-right: 10px; }
-    .add-transaction-form form #source-field select,
-    .add-transaction-form form #direction-field select {
-      width: 140px; }
-  .add-transaction-form form #direction-field {
-    padding-right: 0;
-    padding-left: 10px; }
-  .add-transaction-form form input.button {
-    margin: 7px 0 0;
-    width: 300px; }
-
-.transaction-list .day h3 {
-  font-size: 1em; }
-.transaction-list .day .transaction {
+  background-color: #333333;
+  color: white;
+  text-shadow: 1px 1px 1px black;
+  border-top: 1px solid #444444;
+  border-bottom: 1px solid black;
   display: table;
   width: 100%; }
-  .transaction-list .day .transaction .title {
-    display: table-cell; }
-  .transaction-list .day .transaction .amount {
+  .current-balance-indicator .container {
     display: table-cell;
-    color: green;
-    text-align: right; }
-  .transaction-list .day .transaction .source {
+    padding: 5px 5px 2px; }
+    .current-balance-indicator .container .title {
+      font-size: 0.7em; }
+    .current-balance-indicator .container .balance {
+      padding-top: 4px;
+      font-weight: bold;
+      font-size: 1em;
+      text-align: left; }
+
+.add-transaction-form-toggler {
+  background-color: #333333;
+  color: white;
+  text-shadow: 1px 1px 1px black;
+  border-top: 1px solid #444444;
+  border-bottom: 1px solid black;
+  padding: 3px 0;
+  text-align: center;
+  font-weight: bold;
+  cursor: pointer; }
+
+.add-transaction-form {
+  background-color: #333333;
+  color: white;
+  text-shadow: 1px 1px 1px black;
+  border-top: 1px solid #444444;
+  border-bottom: 1px solid black; }
+  .add-transaction-form.hidden {
+    display: none; }
+  .add-transaction-form form {
+    margin: 0;
+    width: 100%; }
+    .add-transaction-form form input[type=text],
+    .add-transaction-form form select {
+      width: 284px;
+      font-family: inherit;
+      font-size: inherit;
+      padding: 2px 6px; }
+    .add-transaction-form form input[type=text] {
+      background-color: transparent;
+      color: white;
+      border: none; }
+    .add-transaction-form form select {
+      width: 300px; }
+    .add-transaction-form form #source-field,
+    .add-transaction-form form #direction-field {
+      display: inline;
+      padding-right: 10px; }
+      .add-transaction-form form #source-field select,
+      .add-transaction-form form #direction-field select {
+        width: 140px; }
+    .add-transaction-form form #direction-field {
+      padding-right: 0;
+      padding-left: 10px; }
+    .add-transaction-form form input.button {
+      margin: 7px 0 0;
+      width: 300px; }
+
+.transaction-list .day h3 {
+  background-color: rgba(0, 0, 0, 0.25);
+  color: #666666;
+  text-shadow: 1px 1px 0px #cccccc;
+  border-top: 1px solid #777777;
+  border-bottom: 1px solid black;
+  padding: 3px 5px;
+  font-size: 1em;
+  margin: 0; }
+.transaction-list .day .transactions .transaction {
+  background-color: #333333;
+  color: white;
+  text-shadow: 1px 1px 1px black;
+  border-top: 1px solid #444444;
+  border-bottom: 1px solid black;
+  padding: 7px 5px;
+  display: table;
+  width: 100%;
+  border-top: 1px solid #444444;
+  border-bottom: 1px solid #222222; }
+  .transaction-list .day .transactions .transaction[alternate] {
+    background-color: #555555;
+    border-top: 1px solid #666666;
+    border-bottom: 1px solid #222222; }
+  .transaction-list .day .transactions .transaction .title {
+    display: table-cell; }
+  .transaction-list .day .transactions .transaction .amount {
+    display: table-cell;
+    color: #87e122;
+    text-align: right;
+    font-weight: bold; }
+  .transaction-list .day .transactions .transaction .source {
     display: table-cell;
     width: 80px;
     color: #aaaaaa;
     text-align: right; }
-  .transaction-list .day .transaction[direction=out] .amount {
-    color: red; }
+  .transaction-list .day .transactions .transaction[direction=out] .amount {
+    color: #dc3a41; }

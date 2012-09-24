@@ -32,7 +32,8 @@
     (catch Exception e nil)))
 
 (defn mongo []
-  (let [url (get (System/getenv) "MONGOHQ_URL" "mongodb://127.0.0.1:27017/expensive")
+  ; (let [url (get (System/getenv) "MONGOHQ_URL" "mongodb://127.0.0.1:27017/expensive")
+  (let [url (get (System/getenv) "MONGOHQ_URL" "mongodb://heroku:d9622b227b4395f1e252d4eccfa743fb@flame.mongohq.com:27022/app4577789")
         [_ _ username password host port database] (re-find #"mongodb\:\/\/((.+)\:(.+)\@)?(.+)\:(\d+)\/(.+)" url)
         port (Integer/parseInt port)
         connection (db/make-connection database :host host :port port)]

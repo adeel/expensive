@@ -11,6 +11,7 @@
       [:meta {:content "text/html; charset=UTF-8" :http-equiv "content-type"}]
       [:meta {:name "viewport" :content "width=device-width"}]
       [:meta {:name "apple-mobile-web-app-capable" :content "yes"}]
+      [:script {:src "//ajax.googleapis.com/ajax/libs/mootools/1.4.5/mootools-yui-compressed.js"}]
       (include-css "/style.css")]
     [:body
       body]))
@@ -55,13 +56,14 @@
         (when (> (count ts) 0)
           [:div.day
             [:h3 (date-for-humans date)]
-            (map
-              (fn [t]
-                [:div.transaction {:id (str (t :_id)) :direction (t :direction)}
-                  [:div.category (t :category)]
-                  [:div.amount (format "%.2f" (float (t :amount)))]
-                  [:div.source (t :source)]])
-              ts)])))])
+            [:div.transactions
+              (map-indexed
+                (fn [i t]
+                  [:div.transaction {:id (str (t :_id)) :direction (t :direction) :alternate (= (mod i 2) 1)}
+                    [:div.category (t :category)]
+                    [:div.amount (format "%.2f" (float (t :amount)))]
+                    [:div.source (t :source)]])
+                ts)]])))])
 
 (defn n-day-date-selector [start-date n]
   [:select {:name "date"}
@@ -70,7 +72,7 @@
       [:option {:value (date-for-db date)} (date-for-humans date)])])
 
 (defn add-transaction-form []
-  [:div.add-transaction-form
+  [:div#add-transaction-form.add-transaction-form.hidden
     [:form {:action "" :method "POST"}
       [:div.field
         [:input#category-field {:type "text" :name "category" :placeholder "Category"}]]
@@ -95,6 +97,9 @@
 (defn index [transactions]
   (layout
     (current-balance-indicator transactions)
+    [:div.add-transaction-form-toggler
+      {:onclick "var f=$('add-transaction-form'); f.toggleClass('hidden');"}
+      "+"]
     (add-transaction-form)
     (transaction-list
       (group-by :date transactions) 30)))

@@ -2,26 +2,53 @@ html,
 body
   font-family: "Helvetica Neue"
   font-size: 1.1em
-  margin: 20px auto
   width: 300px
+  margin: 0
+
+@mixin dark-block
+  background-color: #333
+  color: #fff
+  text-shadow: 1px 1px 1px #000
+  border-top: 1px solid #444
+  border-bottom: 1px solid #000
+
+@mixin light-block
+  background-color: rgba(0,0,0,.25)
+  color: #666
+  text-shadow: 1px 1px 0px #ccc
+  border-top: 1px solid #777
+  border-bottom: 1px solid #000
 
 .current-balance-indicator
-  margin: 0 0 30px
+  +dark-block
+  display: table
+  width: 100%
 
   .container
-    display: table
-    width: 100%
+    display: table-cell
+    padding: 5px 5px 2px
 
     .title
-      display: table-cell
-      width: 100px
-      font-weight: bold
+      font-size: 0.7em
     .balance
-      display: table-cell
-      color: green
-      text-align: right
+      padding-top: 4px
+      font-weight: bold
+      font-size: 1em
+      text-align: left
+
+.add-transaction-form-toggler
+  +dark-block
+  padding: 3px 0
+  text-align: center
+  font-weight: bold
+  cursor: pointer
 
 .add-transaction-form
+  +dark-block
+
+  &.hidden
+    display: none
+
   form
     margin: 0
     width: 100%
@@ -32,6 +59,11 @@ body
       font-family: inherit
       font-size: inherit
       padding: 2px 6px
+
+    input[type=text]
+      background-color: transparent
+      color: #fff
+      border: none
 
     select
       width: 300px
@@ -53,26 +85,41 @@ body
       width: 300px
 
 .transaction-list
+
   .day
     h3
+      +light-block
+      padding: 3px 5px
       font-size: 1em
+      margin: 0
 
-    .transaction
-      display: table
-      width: 100%
+    .transactions
+      .transaction
+        +dark-block
+        padding: 7px 5px
+        display: table
+        width: 100%
+        border-top: 1px solid #444
+        border-bottom: 1px solid #222
 
-      .title
-        display: table-cell
-      .amount
-        display: table-cell
-        color: green
-        text-align: right
-      .source
-        display: table-cell
-        width: 80px
-        color: #aaa
-        text-align: right
+        &[alternate]
+          background-color: #555
+          border-top: 1px solid #666
+          border-bottom: 1px solid #222
 
-      &[direction=out]
+        .title
+          display: table-cell
         .amount
-          color: red
+          display: table-cell
+          color: #87e122
+          text-align: right
+          font-weight: bold
+        .source
+          display: table-cell
+          width: 80px
+          color: #aaa
+          text-align: right
+
+        &[direction=out]
+          .amount
+            color: #dc3a41
