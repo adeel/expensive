@@ -43,7 +43,8 @@ body
   font-weight: bold
   cursor: pointer
 
-.add-transaction-form
+.add-transaction-form,
+.edit-transaction-form
   +dark-block
 
   &.hidden
@@ -55,7 +56,7 @@ body
 
     input[type=text],
     select
-      width: 284px
+      width: 304px
       font-family: inherit
       font-size: inherit
       padding: 2px 6px
@@ -64,9 +65,10 @@ body
       background-color: transparent
       color: #fff
       border: none
+      border-bottom: 1px dashed #ccc
 
     select
-      width: 300px
+      width: 320px
 
     #source-field,
     #direction-field
@@ -74,7 +76,7 @@ body
       padding-right: 10px
 
       select
-        width: 140px
+        width: 150px
 
     #direction-field
       padding-right: 0
@@ -82,10 +84,40 @@ body
 
     input.button
       margin: 7px 0 0
-      width: 300px
+      width: 320px
+
+.transaction-view
+  +dark-block
+  padding: 7px 5px
+  display: table
+  width: 100%
+  border-top: 1px solid #444
+  border-bottom: 1px solid #222
+  cursor: pointer
+
+  &[alternate]
+    background-color: #555
+    border-top: 1px solid #666
+    border-bottom: 1px solid #222
+
+  .title
+    display: table-cell
+  .amount
+    display: table-cell
+    color: #87e122
+    text-align: right
+    font-weight: bold
+  .source
+    display: table-cell
+    width: 80px
+    color: #aaa
+    text-align: right
+
+  &[direction=out]
+    .amount
+      color: #dc3a41
 
 .transaction-list
-
   .day
     h3
       +light-block
@@ -94,32 +126,3 @@ body
       margin: 0
 
     .transactions
-      .transaction
-        +dark-block
-        padding: 7px 5px
-        display: table
-        width: 100%
-        border-top: 1px solid #444
-        border-bottom: 1px solid #222
-
-        &[alternate]
-          background-color: #555
-          border-top: 1px solid #666
-          border-bottom: 1px solid #222
-
-        .title
-          display: table-cell
-        .amount
-          display: table-cell
-          color: #87e122
-          text-align: right
-          font-weight: bold
-        .source
-          display: table-cell
-          width: 80px
-          color: #aaa
-          text-align: right
-
-        &[direction=out]
-          .amount
-            color: #dc3a41

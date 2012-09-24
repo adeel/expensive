@@ -35,42 +35,87 @@ body {
   font-weight: bold;
   cursor: pointer; }
 
-.add-transaction-form {
+.add-transaction-form,
+.edit-transaction-form {
   background-color: #333333;
   color: white;
   text-shadow: 1px 1px 1px black;
   border-top: 1px solid #444444;
   border-bottom: 1px solid black; }
-  .add-transaction-form.hidden {
+  .add-transaction-form.hidden,
+  .edit-transaction-form.hidden {
     display: none; }
-  .add-transaction-form form {
+  .add-transaction-form form,
+  .edit-transaction-form form {
     margin: 0;
     width: 100%; }
     .add-transaction-form form input[type=text],
-    .add-transaction-form form select {
-      width: 284px;
+    .add-transaction-form form select,
+    .edit-transaction-form form input[type=text],
+    .edit-transaction-form form select {
+      width: 304px;
       font-family: inherit;
       font-size: inherit;
       padding: 2px 6px; }
-    .add-transaction-form form input[type=text] {
+    .add-transaction-form form input[type=text],
+    .edit-transaction-form form input[type=text] {
       background-color: transparent;
       color: white;
-      border: none; }
-    .add-transaction-form form select {
-      width: 300px; }
+      border: none;
+      border-bottom: 1px dashed #cccccc; }
+    .add-transaction-form form select,
+    .edit-transaction-form form select {
+      width: 320px; }
     .add-transaction-form form #source-field,
-    .add-transaction-form form #direction-field {
+    .add-transaction-form form #direction-field,
+    .edit-transaction-form form #source-field,
+    .edit-transaction-form form #direction-field {
       display: inline;
       padding-right: 10px; }
       .add-transaction-form form #source-field select,
-      .add-transaction-form form #direction-field select {
-        width: 140px; }
-    .add-transaction-form form #direction-field {
+      .add-transaction-form form #direction-field select,
+      .edit-transaction-form form #source-field select,
+      .edit-transaction-form form #direction-field select {
+        width: 150px; }
+    .add-transaction-form form #direction-field,
+    .edit-transaction-form form #direction-field {
       padding-right: 0;
       padding-left: 10px; }
-    .add-transaction-form form input.button {
+    .add-transaction-form form input.button,
+    .edit-transaction-form form input.button {
       margin: 7px 0 0;
-      width: 300px; }
+      width: 320px; }
+
+.transaction-view {
+  background-color: #333333;
+  color: white;
+  text-shadow: 1px 1px 1px black;
+  border-top: 1px solid #444444;
+  border-bottom: 1px solid black;
+  padding: 7px 5px;
+  display: table;
+  width: 100%;
+  border-top: 1px solid #444444;
+  border-bottom: 1px solid #222222;
+  cursor: pointer; }
+  .transaction-view[alternate] {
+    background-color: #555555;
+    border-top: 1px solid #666666;
+    border-bottom: 1px solid #222222; }
+  .transaction-view .title {
+    display: table-cell; }
+  .transaction-view .amount {
+    display: table-cell;
+    color: #87e122;
+    text-align: right;
+    font-weight: bold; }
+  .transaction-view .source {
+    display: table-cell;
+    width: 80px;
+    color: #aaaaaa;
+    text-align: right; }
+  .transaction-view[direction=out] .amount {
+    color: #dc3a41; }
 
 .transaction-list .day h3 {
   background-color: rgba(0, 0, 0, 0.25);
@@ -81,32 +126,3 @@ body {
   padding: 3px 5px;
   font-size: 1em;
   margin: 0; }
-.transaction-list .day .transactions .transaction {
-  background-color: #333333;
-  color: white;
-  text-shadow: 1px 1px 1px black;
-  border-top: 1px solid #444444;
-  border-bottom: 1px solid black;
-  padding: 7px 5px;
-  display: table;
-  width: 100%;
-  border-top: 1px solid #444444;
-  border-bottom: 1px solid #222222; }
-  .transaction-list .day .transactions .transaction[alternate] {
-    background-color: #555555;
-    border-top: 1px solid #666666;
-    border-bottom: 1px solid #222222; }
-  .transaction-list .day .transactions .transaction .title {
-    display: table-cell; }
-  .transaction-list .day .transactions .transaction .amount {
-    display: table-cell;
-    color: #87e122;
-    text-align: right;
-    font-weight: bold; }
-  .transaction-list .day .transactions .transaction .source {
-    display: table-cell;
-    width: 80px;
-    color: #aaaaaa;
-    text-align: right; }
-  .transaction-list .day .transactions .transaction[direction=out] .amount {
-    color: #dc3a41; }

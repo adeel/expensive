@@ -48,6 +48,14 @@
         [:div.title "Savings"]
         [:div.balance (format "%.2f" (float save-bal))]]]))
 
+(defn transaction-view [t]
+  [:div.transaction-view
+    {:id        (str (t :_id))
+     :direction (t :direction)}
+    [:div.category (t :category)]
+    [:div.amount (format "%.2f" (float (t :amount)))]
+    [:div.source (t :source)]])
+
 (defn transaction-list [transactions delta]
   [:div.transaction-list
     (for [i (range (- delta) (inc delta))]
@@ -59,19 +67,19 @@
             [:div.transactions
               (map-indexed
                 (fn [i t]
-                  [:div.transaction {:id (str (t :_id)) :direction (t :direction) :alternate (= (mod i 2) 1)}
-                    [:div.category (t :category)]
-                    [:div.amount (format "%.2f" (float (t :amount)))]
-                    [:div.source (t :source)]])
+                  (assoc-in
+                    (assoc-in (transaction-view t)
+                      [1 :onclick] (str "location.href='/transactions/" (str (t :_id)) "';"))
+                    [1 :alternate] (= (mod i 2) 1)))
                 ts)]])))])
 
-(defn n-day-date-selector [start-date n]
-  (let [date-str-today (date-for-db (datetime/now))]
+(defn n-day-date-selector [start-date n selected]
+  (let [date-str-selected (date-for-db selected)]
     [:select {:name "date"}
       (for [i (range (inc n))
             :let [date      (datetime/plus start-date (datetime/days i))
                   date-str  (date-for-db date)
-                  selected? (= date-str-today date-str)]]
+                  selected? (= date-str-selected date-str)]]
         [:option {:value date-str :selected selected?}
           (date-for-humans date)])]))
 
@@ -95,7 +103,7 @@
           [:option {:value "out"} "Out"]]]
       [:div#date-field.field
         (n-day-date-selector
-          (datetime/minus (datetime/now) (datetime/days 30)) 60)]
+          (datetime/minus (datetime/now) (datetime/days 30)) 60 (datetime/now))]
       [:div.button
         [:input.button {:type "submit" :value "Add"}]]]])
 
@@ -108,3 +116,33 @@
     (add-transaction-form)
     (transaction-list
       (group-by :date transactions) 30)))
+
+(defn edit-transaction-form [t]
+  [:div.edit-transaction-form
+    [:form {:action "" :method "POST"}
+      [:div.field
+        [:input#category-field {:type "text" :name "category" :value (t :category)}]]
+      [:div.field
+        [:input {:type "text" :name "amount" :value (t :amount)}]]
+      [:div#source-field.field
+        [:select {:name "source"}
+          [:option "Source"]
+          [:option {:value "cash"    :selected (= "cash"    (t :source))} "Cash"]
+          [:option {:value "bank"    :selected (= "bank"    (t :source))} "Bank"]
+          [:option {:value "savings" :selected (= "savings" (t :source))} "Savings"]]]
+      [:div#direction-field.field
+        [:select {:name "direction"}
+          [:option "Direction"]
+          [:option {:value "in"  :selected (= "in"  (t :direction))} "In"]
+          [:option {:value "out" :selected (= "out" (t :direction))} "Out"]]]
+      [:div#date-field.field
+        (n-day-date-selector
+          (datetime/minus (datetime/now) (datetime/days 30)) 60
+          (date-from-db-format (t :date)))]
+      [:div.button
+        [:input.button {:type "submit" :value "Update"}]]]])
+
+(defn transaction [t]
+  (layout
+    (transaction-view t)
+    (edit-transaction-form t)))

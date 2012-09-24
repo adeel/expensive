@@ -45,6 +45,24 @@
                     :date      (date-for-db date)})]
         (redirect "/"))
       (views/login)))
+  (GET "/transactions/:id" {{:keys [id]} :params}
+    (if-let [user (db/fetch-one :users :where {:_id (object-id (session-get :user))})]
+      (if-let [t (db/fetch-one :transactions :where {:user (user :_id) :_id (object-id id)})]
+        (views/transaction t)
+        (redirect "/"))
+      (redirect "/")))
+  (POST "/transactions/:id" {{:keys [id category amount direction source date]} :params}
+    (if-let [user (db/fetch-one :users :where {:_id (object-id (session-get :user))})]
+      (if-let [t (db/fetch-one :transactions :where {:user (user :_id) :_id (object-id id)})]
+        (let [date (try (date-from-db-format date)
+                     (catch Exception e (date-for-db (datetime/now))))
+              t    (db/update! :transactions t
+                     {"$set" {:category  category
+                              :amount    (try (Float/parseFloat amount) (catch Exception e 0.0))
+                              :source    source
+                              :direction direction
+                              :date      (date-for-db date)}})]
+          (redirect "/")))))
   (GET "/transactions.csv" []
     (if-let [user (db/fetch-one :users :where {:_id (object-id (session-get :user))})]
       {:headers {"content-type" "text/csv"}
