@@ -20,9 +20,9 @@
   [:div.login-form
     [:form {:action "/login" :method "POST"}
       [:div.field
-        [:input.text {:type "text" :name "username" :value "Username"}]]
+        [:input.text {:type "text" :name "username" :value "Username" :onfocus "this.value='';"}]]
       [:div.field
-        [:input.text {:type "password" :name "password" :value "Password"}]]
+        [:input.text {:type "password" :name "password" :value "Password" :onfocus "this.value='';"}]]
       [:div.button
         [:input.button {:type "submit" :value "Login"}]]]])
 
