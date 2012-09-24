@@ -20,7 +20,7 @@
 (defroutes main-routes
   (GET "/" []
     (if-let [user (db/fetch-one :users :where {:_id (object-id (session-get :user))})]
-      (let [ts (db/fetch :transactions :where {:user (user :_id)})
+      (let [ts (db/fetch :transactions :where {:user (user :_id)})]
         (session-put! :user (session-get :user)) ; force session timeout to extend
         (views/index ts))
       (views/login)))
