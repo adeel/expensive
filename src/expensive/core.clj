@@ -20,8 +20,7 @@
 (defroutes main-routes
   (GET "/" []
     (if-let [user (db/fetch-one :users :where {:_id (object-id (session-get :user))})]
-      (let [ts (map #(db/fetch-one :transactions :where {:_id %})
-                 (user :transactions))]
+      (let [ts (db/fetch :transactions :where {:user (user :_id)})
         (session-put! :user (session-get :user)) ; force session timeout to extend
         (views/index ts))
       (views/login)))
@@ -44,7 +43,6 @@
                     :source    source
                     :direction direction
                     :date      (date-for-db date)})]
-        (db/update! :users user {"$push" {:transactions (t :_id)}})
         (redirect "/"))
       (views/login)))
   (GET "/transactions.csv" []
